@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.springboot.seckil.mapper.CourseMapper" >
+  <resultMap id="BaseResultMap" type="com.springboot.seckil.model.Course" >
+    <id column="courseNo" property="courseno" jdbcType="INTEGER" />
+    <result column="courseName" property="coursename" jdbcType="VARCHAR" />
+    <result column="teacherName" property="teachername" jdbcType="VARCHAR" />
+    <result column="courseDesciption" property="coursedesciption" jdbcType="VARCHAR" />
+    <result column="coursePeriod" property="courseperiod" jdbcType="VARCHAR" />
+    <result column="startTime" property="starttime" jdbcType="TIMESTAMP" />
+    <result column="endTime" property="endtime" jdbcType="TIMESTAMP" />
+    <result column="coursePrice" property="courseprice" jdbcType="DECIMAL" />
+    <result column="stockQuantity" property="stockquantity" jdbcType="INTEGER" />
+    <result column="courseType" property="coursetype" jdbcType="INTEGER" />
+    <result column="coursePic" property="coursepic" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    courseNo, courseName, teacherName, courseDesciption, coursePeriod, startTime, endTime, 
+    coursePrice, stockQuantity, courseType, coursePic
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.springboot.seckil.model.CourseExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from course
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from course
+    where courseNo = #{courseno,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from course
+    where courseNo = #{courseno,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.springboot.seckil.model.CourseExample" >
+    delete from course
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.springboot.seckil.model.Course" >
+    <selectKey resultType="java.lang.Integer" keyProperty="courseno" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into course (courseName, teacherName, courseDesciption, 
+      coursePeriod, startTime, endTime, 
+      coursePrice, stockQuantity, courseType, 
+      coursePic)
+    values (#{coursename,jdbcType=VARCHAR}, #{teachername,jdbcType=VARCHAR}, #{coursedesciption,jdbcType=VARCHAR}, 
+      #{courseperiod,jdbcType=VARCHAR}, #{starttime,jdbcType=TIMESTAMP}, #{endtime,jdbcType=TIMESTAMP}, 
+      #{courseprice,jdbcType=DECIMAL}, #{stockquantity,jdbcType=INTEGER}, #{coursetype,jdbcType=INTEGER}, 
+      #{coursepic,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.springboot.seckil.model.Course" >
+    <selectKey resultType="java.lang.Integer" keyProperty="courseno" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into course
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="coursename != null" >
+        courseName,
+      </if>
+      <if test="teachername != null" >
+        teacherName,
+      </if>
+      <if test="coursedesciption != null" >
+        courseDesciption,
+      </if>
+      <if test="courseperiod != null" >
+        coursePeriod,
+      </if>
+      <if test="starttime != null" >
+        startTime,
+      </if>
+      <if test="endtime != null" >
+        endTime,
+      </if>
+      <if test="courseprice != null" >
+        coursePrice,
+      </if>
+      <if test="stockquantity != null" >
+        stockQuantity,
+      </if>
+      <if test="coursetype != null" >
+        courseType,
+      </if>
+      <if test="coursepic != null" >
+        coursePic,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="coursename != null" >
+        #{coursename,jdbcType=VARCHAR},
+      </if>
+      <if test="teachername != null" >
+        #{teachername,jdbcType=VARCHAR},
+      </if>
+      <if test="coursedesciption != null" >
+        #{coursedesciption,jdbcType=VARCHAR},
+      </if>
+      <if test="courseperiod != null" >
+        #{courseperiod,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null" >
+        #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="courseprice != null" >
+        #{courseprice,jdbcType=DECIMAL},
+      </if>
+      <if test="stockquantity != null" >
+        #{stockquantity,jdbcType=INTEGER},
+      </if>
+      <if test="coursetype != null" >
+        #{coursetype,jdbcType=INTEGER},
+      </if>
+      <if test="coursepic != null" >
+        #{coursepic,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.springboot.seckil.model.CourseExample" resultType="java.lang.Integer" >
+    select count(*) from course
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update course
+    <set >
+      <if test="record.courseno != null" >
+        courseNo = #{record.courseno,jdbcType=INTEGER},
+      </if>
+      <if test="record.coursename != null" >
+        courseName = #{record.coursename,jdbcType=VARCHAR},
+      </if>
+      <if test="record.teachername != null" >
+        teacherName = #{record.teachername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.coursedesciption != null" >
+        courseDesciption = #{record.coursedesciption,jdbcType=VARCHAR},
+      </if>
+      <if test="record.courseperiod != null" >
+        coursePeriod = #{record.courseperiod,jdbcType=VARCHAR},
+      </if>
+      <if test="record.starttime != null" >
+        startTime = #{record.starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.endtime != null" >
+        endTime = #{record.endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.courseprice != null" >
+        coursePrice = #{record.courseprice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.stockquantity != null" >
+        stockQuantity = #{record.stockquantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.coursetype != null" >
+        courseType = #{record.coursetype,jdbcType=INTEGER},
+      </if>
+      <if test="record.coursepic != null" >
+        coursePic = #{record.coursepic,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update course
+    set courseNo = #{record.courseno,jdbcType=INTEGER},
+      courseName = #{record.coursename,jdbcType=VARCHAR},
+      teacherName = #{record.teachername,jdbcType=VARCHAR},
+      courseDesciption = #{record.coursedesciption,jdbcType=VARCHAR},
+      coursePeriod = #{record.courseperiod,jdbcType=VARCHAR},
+      startTime = #{record.starttime,jdbcType=TIMESTAMP},
+      endTime = #{record.endtime,jdbcType=TIMESTAMP},
+      coursePrice = #{record.courseprice,jdbcType=DECIMAL},
+      stockQuantity = #{record.stockquantity,jdbcType=INTEGER},
+      courseType = #{record.coursetype,jdbcType=INTEGER},
+      coursePic = #{record.coursepic,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.springboot.seckil.model.Course" >
+    update course
+    <set >
+      <if test="coursename != null" >
+        courseName = #{coursename,jdbcType=VARCHAR},
+      </if>
+      <if test="teachername != null" >
+        teacherName = #{teachername,jdbcType=VARCHAR},
+      </if>
+      <if test="coursedesciption != null" >
+        courseDesciption = #{coursedesciption,jdbcType=VARCHAR},
+      </if>
+      <if test="courseperiod != null" >
+        coursePeriod = #{courseperiod,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        startTime = #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null" >
+        endTime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="courseprice != null" >
+        coursePrice = #{courseprice,jdbcType=DECIMAL},
+      </if>
+      <if test="stockquantity != null" >
+        stockQuantity = #{stockquantity,jdbcType=INTEGER},
+      </if>
+      <if test="coursetype != null" >
+        courseType = #{coursetype,jdbcType=INTEGER},
+      </if>
+      <if test="coursepic != null" >
+        coursePic = #{coursepic,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where courseNo = #{courseno,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.springboot.seckil.model.Course" >
+    update course
+    set courseName = #{coursename,jdbcType=VARCHAR},
+      teacherName = #{teachername,jdbcType=VARCHAR},
+      courseDesciption = #{coursedesciption,jdbcType=VARCHAR},
+      coursePeriod = #{courseperiod,jdbcType=VARCHAR},
+      startTime = #{starttime,jdbcType=TIMESTAMP},
+      endTime = #{endtime,jdbcType=TIMESTAMP},
+      coursePrice = #{courseprice,jdbcType=DECIMAL},
+      stockQuantity = #{stockquantity,jdbcType=INTEGER},
+      courseType = #{coursetype,jdbcType=INTEGER},
+      coursePic = #{coursepic,jdbcType=VARCHAR}
+    where courseNo = #{courseno,jdbcType=INTEGER}
+  </update>
+</mapper>
