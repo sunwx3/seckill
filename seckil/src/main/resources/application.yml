@@ -102,4 +102,6 @@ spring:
  # port: 8080
   mvc:
     static-path-pattern: /resources/static/**
-
+#mybatis:
+mybatis:
+  mapper-locations: classpath:com.springboot.seckil.mapper/*.xml
