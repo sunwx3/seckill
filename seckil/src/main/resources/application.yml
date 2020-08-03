@@ -87,6 +87,29 @@ spring:
         max-wait: 1
         max-idle: 8
         min-idle: 0
+  kafka:
+    #kafka配置
+    bootstrap-servers: 192.168.141.128:9092
+    producer:
+      retries: 0
+      # 每次批量发送消息的数量
+      batch-size: 16384
+      buffer-memory: 33554432
+      # 指定消息key和消息体的编解码方式
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      # 指定默认消费者group id
+     # group-id: test-consumer-group
+    #  auto-offset-reset: earliest
+    #  enable-auto-commit: true
+    #  auto-commit-interval: 5000
+      # 指定消息key和消息体的编解码方式
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    #自己定义的主题名称,在微服务中使用Value注解注入调用，如果kafka中没有该主题，则会自动创建
+    topic:
+     userTopic: seckill
 #mybatis:
 #  config-location: classpath:mybatis/mybatis-config.xml
 #  mapper-locations: classpath:mybatis/mapper/*.xml
@@ -105,3 +128,5 @@ spring:
 #mybatis:
 mybatis:
   mapper-locations: classpath:com.springboot.seckil.mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

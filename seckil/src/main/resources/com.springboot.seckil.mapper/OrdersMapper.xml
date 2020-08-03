@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.springboot.seckil.mapper.OrdersMapper" >
+  <resultMap id="BaseResultMap" type="com.springboot.seckil.model.Orders" >
+    <id column="order_id" property="orderId" jdbcType="BIGINT" />
+    <result column="course_no" property="courseNo" jdbcType="VARCHAR" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="course_name" property="courseName" jdbcType="VARCHAR" />
+    <result column="course_price" property="coursePrice" jdbcType="DECIMAL" />
+    <result column="pay_price" property="payPrice" jdbcType="DECIMAL" />
+    <result column="payment" property="payment" jdbcType="VARCHAR" />
+    <result column="pay_status" property="payStatus" jdbcType="VARCHAR" />
+    <result column="pay_date" property="payDate" jdbcType="TIMESTAMP" />
+    <result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+    <result column="creat_by" property="creatBy" jdbcType="VARCHAR" />
+    <result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+    <result column="update_by" property="updateBy" jdbcType="VARCHAR" />
+    <result column="course_pic" property="coursePic" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    order_id, course_no, username, course_name, course_price, pay_price, payment, pay_status, 
+    pay_date, create_date, creat_by, update_date, update_by, course_pic
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.springboot.seckil.model.OrdersExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from orders
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </select>
+  <select id="selectOrderByUsernameAndCourseNo" resultMap="BaseResultMap" parameterType="com.springboot.seckil.model.Orders" >
+    select
+    <include refid="Base_Column_List" />
+    from orders
+    where username = #{username,jdbcType=VARCHAR} and course_no = #{courseNo,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from orders
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.springboot.seckil.model.OrdersExample" >
+    delete from orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.springboot.seckil.model.Orders" useGeneratedKeys="true" keyProperty="orderId">
+    <selectKey resultType="java.lang.Long" keyProperty="orderId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into orders (course_no, username, course_name, 
+      course_price, pay_price, payment, 
+      pay_status, pay_date, create_date, 
+      creat_by, update_date, update_by, 
+      course_pic)
+    values (#{courseNo,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{courseName,jdbcType=VARCHAR}, 
+      #{coursePrice,jdbcType=DECIMAL}, #{payPrice,jdbcType=DECIMAL}, #{payment,jdbcType=VARCHAR}, 
+      #{payStatus,jdbcType=VARCHAR}, #{payDate,jdbcType=TIMESTAMP}, #{createDate,jdbcType=TIMESTAMP}, 
+      #{creatBy,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, #{updateBy,jdbcType=VARCHAR}, 
+      #{coursePic,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.springboot.seckil.model.Orders" >
+    <selectKey resultType="java.lang.Long" keyProperty="orderId" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into orders
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="courseNo != null" >
+        course_no,
+      </if>
+      <if test="username != null" >
+        username,
+      </if>
+      <if test="courseName != null" >
+        course_name,
+      </if>
+      <if test="coursePrice != null" >
+        course_price,
+      </if>
+      <if test="payPrice != null" >
+        pay_price,
+      </if>
+      <if test="payment != null" >
+        payment,
+      </if>
+      <if test="payStatus != null" >
+        pay_status,
+      </if>
+      <if test="payDate != null" >
+        pay_date,
+      </if>
+      <if test="createDate != null" >
+        create_date,
+      </if>
+      <if test="creatBy != null" >
+        creat_by,
+      </if>
+      <if test="updateDate != null" >
+        update_date,
+      </if>
+      <if test="updateBy != null" >
+        update_by,
+      </if>
+      <if test="coursePic != null" >
+        course_pic,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="courseNo != null" >
+        #{courseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="courseName != null" >
+        #{courseName,jdbcType=VARCHAR},
+      </if>
+      <if test="coursePrice != null" >
+        #{coursePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="payPrice != null" >
+        #{payPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="payment != null" >
+        #{payment,jdbcType=VARCHAR},
+      </if>
+      <if test="payStatus != null" >
+        #{payStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="payDate != null" >
+        #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null" >
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatBy != null" >
+        #{creatBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="coursePic != null" >
+        #{coursePic,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.springboot.seckil.model.OrdersExample" resultType="java.lang.Integer" >
+    select count(*) from orders
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update orders
+    <set >
+      <if test="record.orderId != null" >
+        order_id = #{record.orderId,jdbcType=BIGINT},
+      </if>
+      <if test="record.courseNo != null" >
+        course_no = #{record.courseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.username != null" >
+        username = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.courseName != null" >
+        course_name = #{record.courseName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.coursePrice != null" >
+        course_price = #{record.coursePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.payPrice != null" >
+        pay_price = #{record.payPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.payment != null" >
+        payment = #{record.payment,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payStatus != null" >
+        pay_status = #{record.payStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payDate != null" >
+        pay_date = #{record.payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.createDate != null" >
+        create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.creatBy != null" >
+        creat_by = #{record.creatBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateDate != null" >
+        update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateBy != null" >
+        update_by = #{record.updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="record.coursePic != null" >
+        course_pic = #{record.coursePic,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update orders
+    set order_id = #{record.orderId,jdbcType=BIGINT},
+      course_no = #{record.courseNo,jdbcType=VARCHAR},
+      username = #{record.username,jdbcType=VARCHAR},
+      course_name = #{record.courseName,jdbcType=VARCHAR},
+      course_price = #{record.coursePrice,jdbcType=DECIMAL},
+      pay_price = #{record.payPrice,jdbcType=DECIMAL},
+      payment = #{record.payment,jdbcType=VARCHAR},
+      pay_status = #{record.payStatus,jdbcType=VARCHAR},
+      pay_date = #{record.payDate,jdbcType=TIMESTAMP},
+      create_date = #{record.createDate,jdbcType=TIMESTAMP},
+      creat_by = #{record.creatBy,jdbcType=VARCHAR},
+      update_date = #{record.updateDate,jdbcType=TIMESTAMP},
+      update_by = #{record.updateBy,jdbcType=VARCHAR},
+      course_pic = #{record.coursePic,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.springboot.seckil.model.Orders" >
+    update orders
+    <set >
+      <if test="courseNo != null" >
+        course_no = #{courseNo,jdbcType=VARCHAR},
+      </if>
+      <if test="username != null" >
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="courseName != null" >
+        course_name = #{courseName,jdbcType=VARCHAR},
+      </if>
+      <if test="coursePrice != null" >
+        course_price = #{coursePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="payPrice != null" >
+        pay_price = #{payPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="payment != null" >
+        payment = #{payment,jdbcType=VARCHAR},
+      </if>
+      <if test="payStatus != null" >
+        pay_status = #{payStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="payDate != null" >
+        pay_date = #{payDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDate != null" >
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="creatBy != null" >
+        creat_by = #{creatBy,jdbcType=VARCHAR},
+      </if>
+      <if test="updateDate != null" >
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateBy != null" >
+        update_by = #{updateBy,jdbcType=VARCHAR},
+      </if>
+      <if test="coursePic != null" >
+        course_pic = #{coursePic,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.springboot.seckil.model.Orders" >
+    update orders
+    set course_no = #{courseNo,jdbcType=VARCHAR},
+      username = #{username,jdbcType=VARCHAR},
+      course_name = #{courseName,jdbcType=VARCHAR},
+      course_price = #{coursePrice,jdbcType=DECIMAL},
+      pay_price = #{payPrice,jdbcType=DECIMAL},
+      payment = #{payment,jdbcType=VARCHAR},
+      pay_status = #{payStatus,jdbcType=VARCHAR},
+      pay_date = #{payDate,jdbcType=TIMESTAMP},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      creat_by = #{creatBy,jdbcType=VARCHAR},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      update_by = #{updateBy,jdbcType=VARCHAR},
+      course_pic = #{coursePic,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=BIGINT}
+  </update>
+</mapper>

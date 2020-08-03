@@ -289,6 +289,42 @@
     </set>
     where courseNo = #{courseno,jdbcType=INTEGER}
   </update>
+  <update id="updateStockByCourseNo" parameterType="com.springboot.seckil.model.Course" >
+    update course
+    <set >
+      <if test="coursename != null" >
+        courseName = #{coursename,jdbcType=VARCHAR},
+      </if>
+      <if test="teachername != null" >
+        teacherName = #{teachername,jdbcType=VARCHAR},
+      </if>
+      <if test="coursedesciption != null" >
+        courseDesciption = #{coursedesciption,jdbcType=VARCHAR},
+      </if>
+      <if test="courseperiod != null" >
+        coursePeriod = #{courseperiod,jdbcType=VARCHAR},
+      </if>
+      <if test="starttime != null" >
+        startTime = #{starttime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endtime != null" >
+        endTime = #{endtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="courseprice != null" >
+        coursePrice = #{courseprice,jdbcType=DECIMAL},
+      </if>
+
+        stockQuantity = stockQuantity-1,
+
+      <if test="coursetype != null" >
+        courseType = #{coursetype,jdbcType=INTEGER},
+      </if>
+      <if test="coursepic != null" >
+        coursePic = #{coursepic,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where courseNo = #{courseno,jdbcType=INTEGER}
+  </update>
   <update id="updateByPrimaryKey" parameterType="com.springboot.seckil.model.Course" >
     update course
     set courseName = #{coursename,jdbcType=VARCHAR},

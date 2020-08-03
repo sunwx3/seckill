@@ -23,7 +23,7 @@ public abstract class BaseRedis<T> {
     protected abstract String getRedisKey();
 
     /**
-     * 递减操作
+     * 递增操作
      * @param key
      * @param by
      * @return
@@ -33,7 +33,7 @@ public abstract class BaseRedis<T> {
     }
 
     /**
-     * 递增操作
+     * 递减操作
      * @param key
      * @param by
      * @return
